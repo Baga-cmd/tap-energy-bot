@@ -2,13 +2,14 @@ import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
-TOKEN = os.getenv("8272440601:AAFyIMTEWnqTxdXD_L1-9jbgYsWgwjKJlKQ")
+# Получаем токен из переменной окружения
+TOKEN = os.getenv("TELEGRAM_TOKEN")
+print("TOKEN =", TOKEN)  # проверка: должно вывести твой токен, а не None
 
 user_energy = {}
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
-
     if user_id not in user_energy:
         user_energy[user_id] = 0
 
@@ -26,7 +27,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-
     user_id = query.from_user.id
     if user_id not in user_energy:
         user_energy[user_id] = 0
@@ -44,7 +44,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.edit_message_text(text=text, reply_markup=InlineKeyboardMarkup(keyboard))
 
 def main():
-    print("8272440601:AAFyIMTEWnqTxdXD_L1-9jbgYsWgwjKJlKQ =", TOKEN)
+    if TOKEN is None:
+        print("Ошибка: токен не найден!")
+        return
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(button_handler))
@@ -53,4 +55,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
