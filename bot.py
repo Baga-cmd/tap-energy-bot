@@ -2,7 +2,7 @@ import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
-TOKEN = os.getenv("TELEGRAM_TOKEN")
+TOKEN = os.getenv("8272440601:AAFyIMTEWnqTxdXD_L1-9jbgYsWgwjKJlKQ")
 
 user_energy = {}
 
@@ -13,13 +13,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_energy[user_id] = 0
 
     keyboard = [
-        [InlineKeyboardButton("? Клик", callback_data="click")],
-        [InlineKeyboardButton("?? Профиль", callback_data="profile")]
+        [InlineKeyboardButton("вљЎ РљР»РёРє", callback_data="click")],
+        [InlineKeyboardButton("рџ“Љ РџСЂРѕС„РёР»СЊ", callback_data="profile")]
     ]
 
     await update.message.reply_text(
-        f"Добро пожаловать в Tap Energy!\n\n"
-        f"? Твоя энергия: {user_energy[user_id]}",
+        f"Р”РѕР±СЂРѕ РїРѕР¶Р°Р»РѕРІР°С‚СЊ РІ Tap Energy!\n\n"
+        f"вљЎ РўРІРѕСЏ СЌРЅРµСЂРіРёСЏ: {user_energy[user_id]}",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
@@ -28,31 +28,26 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
 
     user_id = query.from_user.id
-
     if user_id not in user_energy:
         user_energy[user_id] = 0
 
     if query.data == "click":
         user_energy[user_id] += 1
-        text = f"? Ты нажал!\n\nЭнергия: {user_energy[user_id]}"
-
+        text = f"вљЎ РўС‹ РЅР°Р¶Р°Р»!\n\nР­РЅРµСЂРіРёСЏ: {user_energy[user_id]}"
     elif query.data == "profile":
-        text = f"?? Профиль\n\n? Энергия: {user_energy[user_id]}"
+        text = f"рџ“Љ РџСЂРѕС„РёР»СЊ\n\nвљЎ Р­РЅРµСЂРіРёСЏ: {user_energy[user_id]}"
 
     keyboard = [
-        [InlineKeyboardButton("? Клик", callback_data="click")],
-        [InlineKeyboardButton("?? Профиль", callback_data="profile")]
+        [InlineKeyboardButton("вљЎ РљР»РёРє", callback_data="click")],
+        [InlineKeyboardButton("рџ“Љ РџСЂРѕС„РёР»СЊ", callback_data="profile")]
     ]
-
     await query.edit_message_text(text=text, reply_markup=InlineKeyboardMarkup(keyboard))
 
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
-
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(button_handler))
-
-    print("Бот запущен")
+    print("Р‘РѕС‚ Р·Р°РїСѓС‰РµРЅ")
     app.run_polling()
 
 if __name__ == "__main__":
